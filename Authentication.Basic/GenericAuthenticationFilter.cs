@@ -39,7 +39,7 @@ namespace Microsoft.AspNet.WebApi.Security.Authentication.Basic
         public override void OnAuthorization(HttpActionContext filterContext)
         {
             if (!_isActive) return;
-            var identity = FetchAuthHeader(filterContext);
+            var identity = filterContext.GetIdentity();
             if (identity == null)
             {
                 ChallengeAuthRequest(filterContext);
@@ -66,23 +66,6 @@ namespace Microsoft.AspNet.WebApi.Security.Authentication.Basic
         protected virtual bool OnAuthorizeUser(string user, string pass, HttpActionContext filterContext)
         {
             return !string.IsNullOrEmpty(user) && !string.IsNullOrEmpty(pass);
-        }
-
-        /// <summary>
-        /// Checks for authorization header in the request and parses it, creates user credentials and returns as BasicAuthenticationIdentity
-        /// </summary>
-        /// <param name="filterContext"></param>
-        protected virtual BasicAuthenticationIdentity FetchAuthHeader(HttpActionContext filterContext)
-        {
-            string authHeaderValue = null;
-            var authRequest = filterContext.Request.Headers.Authorization;
-            if (!string.IsNullOrEmpty(authRequest?.Scheme) && authRequest.Scheme == "Basic")
-                authHeaderValue = authRequest.Parameter;
-            if (string.IsNullOrEmpty(authHeaderValue))
-                return null;
-            authHeaderValue = Encoding.Default.GetString(Convert.FromBase64String(authHeaderValue));
-            var credentials = authHeaderValue.Split(':');
-            return credentials.Length < 2 ? null : new BasicAuthenticationIdentity(credentials[0], credentials[1]);
         }
 
 

@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BasicAuthenticationFilter.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="GenericAuthenticationFilter.cs" />
     <Compile Include="GenericIdentity.cs" />
     <Compile Include="IUserAuthenticationService.cs" />

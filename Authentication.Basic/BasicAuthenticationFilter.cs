@@ -47,5 +47,6 @@ namespace Microsoft.AspNet.WebApi.Security.Authentication.Basic
                 basicAuthenticationIdentity.UserId = userId;
             return true;
         }
+        
     }
 }
